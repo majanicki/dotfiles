@@ -9,3 +9,6 @@ set noswapfile
 set shiftwidth=4 tabstop=4 softtabstop=4 autoindent smartindent expandtab
 set colorcolumn=80
 set relativenumber
+set hlsearch
+set incsearch
+set nocompatible
