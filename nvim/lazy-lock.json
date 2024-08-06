@@ -1,4 +1,5 @@
 {
   "lazy.nvim": { "branch": "main", "commit": "d1de92dffab5a862332fdd1892889d362369c12f" },
+  "mini.completion": { "branch": "main", "commit": "6cd80770afa5da1d2a529a2b4b1fb18756d7866c" },
   "tender.vim": { "branch": "master", "commit": "f361e9d907d2e5df703ee995f9032021ef674f2f" }
 }

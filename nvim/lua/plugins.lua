@@ -13,5 +13,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   "jacoborus/tender.vim",
+  { 'echasnovski/mini.completion', version = '*' },
 })
 
+require("mini.completion").setup()
