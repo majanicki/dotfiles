@@ -12,7 +12,6 @@ vim.opt.relativenumber = true
 vim.opt.cursorline = true -- highlight line under cursor
 vim.opt.splitbelow = true -- horizontal split opens at a bottom
 vim.opt.splitright = true -- vertical split opens at the right
-vim.opt.showmode = false  -- Don't show insert at the bottom
 
 vim.opt.incsearch = true  -- search as characters are entered
 vim.opt.hlsearch = true   -- highlight search

@@ -1,50 +1,72 @@
--- Create an event handler for the FileType autocommand
-vim.api.nvim_create_autocmd('FileType', {
-  -- This handler will fire when the buffer's 'filetype' is "c"
-  pattern = 'c',
-  callback = function(args)
-    vim.lsp.start({
-      name = 'clangd',
-      cmd = {'clangd', '--function-arg-placeholders=0', '--fallback-style=Google', '--clang-tidy'},
-    })
-  end,
+require('mason').setup({
+  ui = {
+    icons = {
+      package_installed = "✓",
+      package_pending = "➜",
+      package_uninstalled = "✗"
+    }
+  }
 })
-vim.api.nvim_create_autocmd('LspAttach', {
-  desc = 'LSP actions',
-  callback = function(event)
-    local bufmap = function(mode, lhs, rhs)
-      local opts = {buffer = event.buf}
-      vim.keymap.set(mode, lhs, rhs, opts)
-    end
 
-    -- Display documentation of the symbol under the cursor
-    bufmap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>')
+-- Set different settings for different languages' LSP
+-- LSP list: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+-- How to use setup({}): https://github.com/neovim/nvim-lspconfig/wiki/Understanding-setup-%7B%7D
+--     - the settings table is sent to the LSP
+--     - on_attach: a lua callback function to run after LSP attaches to a given buffer local lspconfig = require('lspconfig')
 
-    -- Jump to the definition
-    bufmap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>')
-
-    -- Jump to declaration
-    bufmap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>')
-
-    -- Lists all the implementations for the symbol under the cursor
-    bufmap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>')
-
-    -- Jumps to the definition of the type symbol
-    bufmap('n', 'go', '<cmd>lua vim.lsp.buf.type_definition()<cr>')
-
-    -- Lists all the references 
-    bufmap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>')
-
-    -- Displays a function's signature information
-    bufmap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<cr>')
-
-    -- Renames all references to the symbol under the cursor
-    bufmap('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>')
-
-    -- Format current file
-    bufmap('n', '<F3>', '<cmd>lua vim.lsp.buf.format()<cr>')
-
-    -- Selects a code action available at the current cursor position
-    bufmap('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>')
-  end
+-- Customized on_attach function
+-- See `:help vim.diagnostic.*` for documentation on any of the below functions
+local opts = { noremap = true, silent = true }
+vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
+local lspconfig = require('lspconfig')
+-- Disable warnings
+vim.diagnostic.config({
+  virtual_text = false,
+  signs = true,
+  underline =true,
+  update_in_insert = false,
+  severity_sort = true,
 })
+
+
+
+require'lsp_signature'.setup({
+    bind = true, -- This is mandatory to have `lsp_signature` in the statusline.
+    handler_opts = {
+        border = "none" -- Optional: can be "single", "double", "shadow", etc.
+    },
+    hint_enable = false, -- Disables inline hints (you can enable it if you want)
+})
+
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
+local on_attach = function(client, bufnr)
+
+  -- Enable completion triggered by <c-x><c-o>
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  local bufopts = { noremap = true, silent = true, buffer = bufnr }
+  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+  vim.keymap.set('n', '<F2>', vim.lsp.buf.rename, bufopts)
+  vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
+  vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+  vim.keymap.set("n", "<F3>", function()
+  vim.api.nvim_set_keymap('n', '<leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>', { noremap = true, silent = true })
+    vim.lsp.buf.format({ async = true })
+  end, bufopts)
+end
+
+-- Configure each language
+-- How to add LSP for a specific language?
+-- 1. use `:Mason` to install corresponding LSP
+-- 2. add configuration below
+lspconfig.pylsp.setup({
+  on_attach = on_attach,
+})
+lspconfig.clangd.setup({
+  on_attach = on_attach,
+})
+vim.api.nvim_set_keymap('n', '<C-n>', '<cmd>lua vim.lsp.buf.document_symbol()<CR>', { noremap = true, silent = true })

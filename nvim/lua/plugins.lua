@@ -12,8 +12,18 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-  "rebelot/kanagawa.nvim",
-  { 'echasnovski/mini.completion', version = '*' },
+  "folke/tokyonight.nvim",
+  "williamboman/mason.nvim",
+  "williamboman/mason-lspconfig.nvim",
+  "neovim/nvim-lspconfig",
+  "ray-x/lsp_signature.nvim",
+ { 'echasnovski/mini.completion', version = '*' },
 })
 
-require("mini.completion").setup()
+
+require("mini.completion").setup({
+  window = {
+    info = {height= 0, width =0},
+    signature = {height= 0, width =0},
+  }
+})
