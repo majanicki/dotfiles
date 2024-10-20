@@ -21,3 +21,5 @@ vim.opt.smartcase = true  -- do not ignore uppercase
 vim.opt.listchars:append{trail="·",tab=">>",nbsp="·"}
 vim.opt.list = true
 
+vim.o.spell = true
+vim.o.spelllang = 'en_us'  -- Set the spell language, e.g., 'en_us' for English

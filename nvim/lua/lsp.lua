@@ -31,11 +31,11 @@ vim.diagnostic.config({
 
 
 require'lsp_signature'.setup({
-    bind = true, -- This is mandatory to have `lsp_signature` in the statusline.
-    handler_opts = {
-        border = "none" -- Optional: can be "single", "double", "shadow", etc.
-    },
-    hint_enable = false, -- Disables inline hints (you can enable it if you want)
+  bind = true, -- This is mandatory to have `lsp_signature` in the statusline.
+  handler_opts = {
+    border = "none" -- Optional: can be "single", "double", "shadow", etc.
+  },
+  hint_enable = false, -- Disables inline hints (you can enable it if you want)
 })
 
 -- Use an on_attach function to only map the following keys
@@ -54,7 +54,7 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
   vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
   vim.keymap.set("n", "<F3>", function()
-  vim.api.nvim_set_keymap('n', '<leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>', { noremap = true, silent = true })
+    vim.api.nvim_set_keymap('n', '<leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>', { noremap = true, silent = true })
     vim.lsp.buf.format({ async = true })
   end, bufopts)
 end
@@ -63,15 +63,19 @@ end
 -- How to add LSP for a specific language?
 -- 1. use `:Mason` to install corresponding LSP
 -- 2. add configuration below
-require('lspconfig').pylsp.setup({
+lspconfig.pylsp.setup({
   on_attach = on_attach,
   settings = {
     pylsp = {
       plugins = {
-        pycodestyle = {
-          enabled = true,    -- Keep pycodestyle enabled
-          ignore = { 'E501', 'W391', 'W291' },  -- Disable specific formatting warnings, e.g., line length (E501) and blank lines (W391)
-        },
+        jedi_completion = { enabled = true },
+        jedi_signature = { enabled = true }, -- Enable signature help
+        rope_completion = { enabled = true },
+        flake8 = { enabled = true },
+        pyflakes = { enabled = true },
+        pycodestyle = { enabled = false },
+        pydocstyle = { enabled = false },
+        mypy = {enabled = true}
       },
     },
   },

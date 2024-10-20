@@ -17,7 +17,9 @@ require("lazy").setup({
   "williamboman/mason-lspconfig.nvim",
   "neovim/nvim-lspconfig",
   "ray-x/lsp_signature.nvim",
- { 'echasnovski/mini.completion', version = '*' },
+  { 'echasnovski/mini.completion', version = '*' },
+  { 'echasnovski/mini.diff', version = '*' },
+  "nvim-treesitter/nvim-treesitter",
 })
 
 
@@ -27,3 +29,18 @@ require("mini.completion").setup({
     signature = {height= 0, width =0},
   }
 })
+
+require("mini.diff").setup({
+  view = {
+    signs = {add='+', change='~', delete='-'}
+  }
+}
+)
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true,                  -- false will disable the whole extension
+  },
+  indent = {
+    enable = true,                  -- Enable indentation based on Tree-sitter
+  },
+}
