@@ -28,16 +28,6 @@ vim.diagnostic.config({
   severity_sort = true,
 })
 
-
-
-require'lsp_signature'.setup({
-  bind = true, -- This is mandatory to have `lsp_signature` in the statusline.
-  handler_opts = {
-    border = "none" -- Optional: can be "single", "double", "shadow", etc.
-  },
-  hint_enable = false, -- Disables inline hints (you can enable it if you want)
-})
-
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)

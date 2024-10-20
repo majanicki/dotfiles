@@ -1,6 +1,6 @@
 -- define your colorscheme here
 vim.o.background = "light"
-local colorscheme = 'PaperColor'
+local colorscheme = 'vscode'
 
 local is_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
 if not is_ok then

@@ -1,4 +1,3 @@
-vim.opt.clipboard = "unnamedplus" -- use system clipboard
 vim.opt.completeopt = {"menu", "menuone", "noselect"} -- show menu with completions
 
 
@@ -20,6 +19,9 @@ vim.opt.smartcase = true  -- do not ignore uppercase
 
 vim.opt.listchars:append{trail="·",tab=">>",nbsp="·"}
 vim.opt.list = true
-
 vim.o.spell = true
 vim.o.spelllang = 'en_us'  -- Set the spell language, e.g., 'en_us' for English
+vim.o.showmode = false
+
+vim.opt.signcolumn = "yes"
+vim.opt.laststatus=3

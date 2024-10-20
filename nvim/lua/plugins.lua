@@ -12,30 +12,30 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-  "NLKNguyen/papercolor-theme",
+  "Mofiqul/vscode.nvim",
   "williamboman/mason.nvim",
   "williamboman/mason-lspconfig.nvim",
   "neovim/nvim-lspconfig",
   "ray-x/lsp_signature.nvim",
   { 'echasnovski/mini.completion', version = '*' },
   { 'echasnovski/mini.diff', version = '*' },
+  { 'echasnovski/mini.statusline', version = '*' },
+  { 'echasnovski/mini-git', version = '*' },
+  { 'echasnovski/mini.surround', version = '*' },
   "nvim-treesitter/nvim-treesitter",
 })
 
-
-require("mini.completion").setup({
-  window = {
-    info = {height= 0, width =0},
-    signature = {height= 0, width =0},
-  }
-})
-
+require("mini.completion").setup({info= {border='single'}, signature={border = 'single'}})
+vim.opt.pumheight = 5
+vim.opt.pumwidth = 18
 require("mini.diff").setup({
   view = {
     signs = {add='+', change='~', delete='-'}
   }
-}
-)
+})
+require("mini.statusline").setup({use_icons = false})
+require("mini.git").setup()
+require("mini.surround").setup()
 require'nvim-treesitter.configs'.setup {
   highlight = {
     enable = true,                  -- false will disable the whole extension
@@ -44,3 +44,4 @@ require'nvim-treesitter.configs'.setup {
     enable = true,                  -- Enable indentation based on Tree-sitter
   },
 }
+
