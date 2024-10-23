@@ -12,7 +12,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-  "Mofiqul/vscode.nvim",
+  "NLKNguyen/papercolor-theme",
   "williamboman/mason.nvim",
   "williamboman/mason-lspconfig.nvim",
   "neovim/nvim-lspconfig",
@@ -30,6 +30,7 @@ vim.opt.pumheight = 5
 vim.opt.pumwidth = 18
 require("mini.diff").setup({
   view = {
+    style = "sign",
     signs = {add='+', change='~', delete='-'}
   }
 })
