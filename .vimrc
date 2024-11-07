@@ -45,12 +45,6 @@ set undodir=~/.vim/backup
 set undofile
 set undoreload=10000
 
-inoremap [ []<left>
-inoremap ( ()<left>
-inoremap { {}<left>
-inoremap " ""<left>
-inoremap ' ''<left>
-
 set showmatch
 
 set list
