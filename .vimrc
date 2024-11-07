@@ -52,3 +52,7 @@ inoremap " ""<left>
 inoremap ' ''<left>
 
 set showmatch
+
+set list
+set listchars=tab:»·,trail:·,extends:→,precedes:←
+
