@@ -36,22 +36,24 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-  "NLKNguyen/papercolor-theme",
+  "p00f/alabaster.nvim",
   "neovim/nvim-lspconfig",
   "williamboman/mason.nvim",
   "williamboman/mason-lspconfig.nvim",
-  "hrsh7th/nvim-cmp",
-  'hrsh7th/cmp-nvim-lsp',
-  'hrsh7th/cmp-buffer',
-  'hrsh7th/cmp-path',
-  'hrsh7th/cmp-cmdline',
-  'hrsh7th/nvim-cmp',
+  { 'echasnovski/mini.completion', version = '*' },
+  { 'echasnovski/mini.cursorword', version = '*' },
+
 })
 
 vim.o.background = "light"
-vim.cmd("colorscheme PaperColor")
+vim.opt.termguicolors = true
+vim.cmd("colorscheme alabaster")
 
 require('mason').setup()
+require("mini.completion").setup()
+vim.opt.pumheight = 5
+vim.opt.pumwidth = 18
+require("mini.cursorword").setup()
 
 
 vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
@@ -82,24 +84,6 @@ local on_attach = function(client, bufnr)
   -- vim.keymap.set('i', '<C-K>',  vim.lsp.buf.signature_help, bufopts)
 end
 
-local cmp = require('cmp')
-
-cmp.setup({
-  completion = {max_item_count = 3},
-  sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
-    { name = 'buffer' },
-    { name = 'path' },
-  }),
-  mapping = {
-    ['<C-n>'] = cmp.mapping.select_next_item(),
-    ['<C-p>'] = cmp.mapping.select_prev_item(),
-  },
-})
-
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
-lspconfig.pylsp.setup({on_attach = on_attach,
-capabilities = capabilities})
-lspconfig.clangd.setup({on_attach = on_attach,
-capabilities = capabilities})
+lspconfig.pylsp.setup({on_attach = on_attach})
+lspconfig.clangd.setup({on_attach = on_attach})
 
