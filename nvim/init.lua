@@ -22,6 +22,8 @@ vim.opt.smartcase = true  -- do not ignore uppercase
 vim.opt.list = true
 vim.opt.listchars:append({ trail = "·", tab = "» " })
 
+vim.opt.spell = true
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   vim.fn.system({
@@ -42,7 +44,10 @@ require("lazy").setup({
   "williamboman/mason-lspconfig.nvim",
   { 'echasnovski/mini.completion', version = '*' },
   { 'echasnovski/mini.cursorword', version = '*' },
-
+  { 'echasnovski/mini.icons', version = '*' },
+  { 'echasnovski/mini.statusline', version = '*' },
+  { 'echasnovski/mini-git', version = '*', main = 'mini.git' }, 
+  { 'echasnovski/mini.diff', version = '*' },
 })
 
 vim.o.background = "light"
@@ -54,6 +59,11 @@ require("mini.completion").setup()
 vim.opt.pumheight = 5
 vim.opt.pumwidth = 18
 require("mini.cursorword").setup()
+require('mini.icons').setup({style='glyph'})
+vim.o.showmode = false
+require('mini.statusline').setup()
+require('mini.diff').setup()
+require('mini.git').setup()
 
 
 vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
@@ -73,7 +83,6 @@ local on_attach = function(client, bufnr)
   local bufopts = { noremap = true, silent = true, buffer = bufnr }
 
   -- Map ctrl+n to trigger LSP completion
-  -- vim.keymap.set('i', '<C-n>', vim.lsp.omnifunc, bufopts) -- Add lsp completions to ctrl+n menu
   vim.keymap.set('n', '<S-K>', vim.lsp.buf.hover, bufopts)
   vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
   vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
@@ -81,7 +90,7 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<F2>', vim.lsp.buf.rename, bufopts)
   vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
   vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-  -- vim.keymap.set('i', '<C-K>',  vim.lsp.buf.signature_help, bufopts)
+  vim.keymap.set('n', '<F3>', vim.lsp.buf.format, bufopts)
 end
 
 lspconfig.pylsp.setup({on_attach = on_attach})
