@@ -3,7 +3,7 @@ vim.opt.wildmenu = true -- show menu for completion
 vim.opt.completeopt = {"menu"} -- show completion menu
 
 vim.opt.tabstop = 2       -- Number of visual spaces per tab
-vim.opt.softtabstop = 2   -- Number of spaces in tab when editting
+vim.opt.softtabstop = 2   -- Number of spaces in tab when editing
 vim.opt.shiftwidth = 2    -- Number of spaces in tab
 vim.opt.expandtab = true
 
@@ -38,7 +38,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-  "p00f/alabaster.nvim",
+  "NLKNguyen/papercolor-theme",
   "neovim/nvim-lspconfig",
   "williamboman/mason.nvim",
   "williamboman/mason-lspconfig.nvim",
@@ -48,11 +48,29 @@ require("lazy").setup({
   { 'echasnovski/mini.statusline', version = '*' },
   { 'echasnovski/mini-git', version = '*', main = 'mini.git' }, 
   { 'echasnovski/mini.diff', version = '*' },
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    event = { "BufReadPost", "BufNewFile" },
+    opts = {
+        ensure_installed = { "lua", "python", "c", "cpp", "javascript", "html", "css" },
+        highlight = {
+            enable = true,
+            additional_vim_regex_highlighting = false,
+        },
+        indent = {
+            enable = true,
+        },
+    },
+    config = function(_, opts)
+        require("nvim-treesitter.configs").setup(opts)
+    end,
+},
 })
 
 vim.o.background = "light"
 vim.opt.termguicolors = true
-vim.cmd("colorscheme alabaster")
+vim.cmd("colorscheme PaperColor")
 
 require('mason').setup()
 require("mini.completion").setup()
@@ -93,6 +111,23 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<F3>', vim.lsp.buf.format, bufopts)
 end
 
-lspconfig.pylsp.setup({on_attach = on_attach})
+lspconfig.pylsp.setup({
+  on_attach = on_attach,
+  settings = {
+    pylsp = {
+      plugins = {
+        jedi_completion = { enabled = false },
+        jedi_signature = { enabled = false }, -- Enable signature help
+        rope_completion = { enabled = false },
+        flake8 = { enabled = false },
+        pyflakes = { enabled = true },
+        pycodestyle = { enabled = false },
+        pydocstyle = { enabled = false },
+        mypy = {enabled = true}
+      },
+    },
+  },
+})
+
 lspconfig.clangd.setup({on_attach = on_attach})
 
