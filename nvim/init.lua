@@ -35,14 +35,17 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
     "NLKNguyen/papercolor-theme",
+    "nvim-treesitter/nvim-treesitter",
     'hrsh7th/cmp-buffer',
     'hrsh7th/cmp-path',
     'hrsh7th/cmp-cmdline',
-    'hrsh7th/cmp-omni',
-    "hrsh7th/cmp-calc",
-    "amarz45/nvim-cmp-buffer-lines",
+    "ray-x/cmp-treesitter",
     "hrsh7th/nvim-cmp",
 })
+
+require("nvim-treesitter.configs").setup({
+  highlight = {enable = false},
+  })
 
 cmp = require'cmp'
 require("cmp").setup({
@@ -51,14 +54,11 @@ require("cmp").setup({
             vim.snippet.expand(args.body)
         end,
     },
-    sources = cmp.config.sources({
-        { name = 'nvim_lsp' },
-    }, {
+    sources = cmp.config.sources(
+      {
+        { name = 'treesitter'},
         { name = 'buffer' },
-        { name = 'calc'},
-        { name = 'buffer-lines'},
         { name = 'path' },
-        { name = 'omni' },
     }),
     mapping = cmp.mapping.preset.insert({
         ['<C-b>'] = cmp.mapping.scroll_docs(-4),
