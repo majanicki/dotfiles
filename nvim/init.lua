@@ -14,8 +14,12 @@ vim.opt.smartcase = true  -- do not ignore uppercase
 vim.opt.list = true
 vim.opt.listchars:append({ trail = "·", tab = "» " })
 
+
+vim.opt.path:append({"/usr/include", "/usr/local/include", "/usr/include/c++"})
+
 vim.o.makeprg = './build.sh'
 vim.api.nvim_set_keymap("n", "<F5>", ":make<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<F4>", "<C-w>v:copen<CR><C-w>k:q<CR>", { noremap = true, silent = true })
 
 --- vim.opt.spell = true
 vim.opt.guicursor = "n-v-c:blinkon1-blinkoff1"
