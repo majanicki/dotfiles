@@ -1,15 +1,9 @@
 set nocompatible
-set number 
-set relativenumber
 set mouse=a
+set number
 
 set path+=** " search into subfolders
 set wildmenu
-set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
-
-set completefunc=syntaxcomplete#Complete
-set complete+=k
-set completeopt=menu
 
 filetype plugin indent on
 syntax on
@@ -28,7 +22,7 @@ set incsearch
 set ignorecase
 set smartcase
 
-set background=light
+set background=dark
 if $COLORTERM == 'gnome-terminal'
     set t_Co=256
 endif
@@ -38,6 +32,7 @@ endtry
 
 set laststatus=2
 set showcmd
+set showmatch
 
 set history=1000
 set splitbelow splitright
@@ -45,8 +40,21 @@ set undodir=~/.vim/backup
 set undofile
 set undoreload=10000
 
-set showmatch
-
 set list
 set listchars=tab:»·,trail:·,extends:→,precedes:←
 
+set completeopt+=menuone
+set completeopt+=noselect
+set shortmess+=c   " Shut off completion messages
+set belloff+=ctrlg " Add only if Vim beeps during completion
+let g:mucomplete#enable_auto_at_startup = 1
+
+set omnifunc=syntaxcomplete#Complete
+
+let g:mucomplete#chains = {'default' : ['path', 'keyn', 'c-n', 'defs', 'incl', 'dict', 'uspl']}
+
+set makeprg=./build.sh
+map <F5> :make<CR>
+
+set showcmd
+set cmdheight=1
