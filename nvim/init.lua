@@ -38,7 +38,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-    "NLKNguyen/papercolor-theme",
+    "RRethy/base16-nvim",
     "nvim-treesitter/nvim-treesitter",
     'hrsh7th/cmp-buffer',
     'hrsh7th/cmp-path',
@@ -79,5 +79,6 @@ vim.opt.pumwidth = 20
 
 vim.o.background = "dark"
 vim.opt.termguicolors = true
-vim.cmd("colorscheme PaperColor")
+vim.cmd("colorscheme base16-selenized-white")
+vim.cmd("set nowrap")
 
