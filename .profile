@@ -28,3 +28,4 @@ fi
 
 setxkbmap -option caps:escape
 xset r rate 400 40
+. "$HOME/.cargo/env"

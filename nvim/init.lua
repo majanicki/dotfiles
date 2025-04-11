@@ -22,8 +22,19 @@ else
     vim.o.makeprg = './build.sh'
 end
 
+
+
+
 vim.api.nvim_set_keymap("n", "<F5>", ":make<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<F4>", "<C-w>v:copen<CR><C-w>k:q<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<F8>", ":!ctags -R --exclude=.git --exclude=bin --exclude=obj .<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 'gd', ':grep! -r "<C-R><C-W>" %<CR>', { noremap = true, silent = true })
+-- --include \\*.%:e
+vim.api.nvim_set_keymap('n', 'gD', ':grep! -r "<C-R><C-W>"  .<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<TAB>', ':bn<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<S-TAB>', ':bp<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<F3>', ':Ex<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('t', '<Esc>', '<C-\\><C-n>', { noremap = true, silent = true })
 
 --- vim.opt.spell = true
 vim.opt.guicursor = "n-v-c:blinkon1-blinkoff1"
@@ -78,11 +89,16 @@ require("cmp").setup({
 
 })
 
+
 vim.opt.pumheight = 5
 vim.opt.pumwidth = 20
 
-vim.o.background = "dark"
+-- vim.o.background = "light"
 vim.opt.termguicolors = true
 vim.cmd("colorscheme base16-selenized-white")
 vim.cmd("set nowrap")
 
+vim.opt.tags = "./tags,tags;"
+vim.opt.undofile = true   -- Enable persistent undo
+vim.opt.mouse = 'a'       -- Enable mouse support
+vim.o.tags = './tags;,tags'
