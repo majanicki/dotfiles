@@ -1,60 +1,64 @@
-set nocompatible
-set mouse=a
-set number
-
-set path+=** " search into subfolders
-set wildmenu
-
-filetype plugin indent on
-syntax on
-
+"--- Basic settings ---
+set tabstop=4            " Number of visual spaces per tab
+set softtabstop=4        " Number of spaces in tab when editing
+set shiftwidth=4         " Number of spaces used for autoindent
+set expandtab            " Convert tabs to spaces
+set number               " Show line numbers
+set splitbelow           " Horizontal split opens at the bottom
+set splitright           " Vertical split opens to the right
+set nowrap               " Do not wrap long lines
 set backspace=indent,eol,start
-set hidden
-set noswapfile
-
-set smarttab
-set shiftwidth=2
-set tabstop=2
-set expandtab
-
-set hlsearch
-set incsearch
-set ignorecase
-set smartcase
-
-set background=dark
-if $COLORTERM == 'gnome-terminal'
-    set t_Co=256
-endif
-try
-  colorscheme PaperColor
-endtry
-
-set laststatus=2
-set showcmd
-set showmatch
-
 set history=1000
-set splitbelow splitright
-set undodir=~/.vim/backup
 set undofile
 set undoreload=10000
-
-set list
-set listchars=tab:»·,trail:·,extends:→,precedes:←
-
-set completeopt+=menuone
-set completeopt+=noselect
 set shortmess+=c   " Shut off completion messages
-set belloff+=ctrlg " Add only if Vim beeps during completion
-let g:mucomplete#enable_auto_at_startup = 1
 
-set omnifunc=syntaxcomplete#Complete
+" Enable syntax highlighting
+syntax enable
 
-let g:mucomplete#chains = {'default' : ['path', 'keyn', 'c-n', 'defs', 'incl', 'dict', 'uspl']}
+" Enable file type detection and plugin loading
+filetype plugin indent on
 
-set makeprg=./build.sh
-map <F5> :make<CR>
+" Auto detect file types (may already be on by default)
+filetype on
 
-set showcmd
-set cmdheight=1
+" --- Search settings ---
+set incsearch            " Incremental search
+set ignorecase           " Ignore case when searching...
+set smartcase            " ...unless the search includes uppercase
+
+" Highlight the current line
+
+" --- Show trailing whitespace and tabs ---
+set list
+set listchars=trail:·,tab:»\ 
+
+" --- Set make command for Windows ---
+if has('win32') || has('win64')
+    set makeprg=.\build.bat
+else
+    set makeprg=./build.sh
+endif
+
+" --- Key mappings ---
+nnoremap <silent> <F5> :make<CR>
+nnoremap <silent> <F4> :copen<CR><C-w>k:q<CR>
+nnoremap <silent> gD :grep! -r "<C-R><C-W>" .<CR>
+nnoremap <silent> <TAB> :bn<CR>
+nnoremap <silent> <S-TAB> :bp<CR>
+tnoremap <silent> <Esc> <C-\><C-n>
+
+" --- Disable annoying sounds (bells) ---
+set belloff=all
+
+set t_Co=256
+set termguicolors
+autocmd vimenter * ++nested colorscheme gruvbox
+
+set cursorline
+
+" Set cursor shape (works in most modern terminals)
+let &t_SI = "\<Esc>[6 q"  " blinking vertical bar in insert mode
+let &t_SR = "\<Esc>[4 q"  " underline in replace mode
+let &t_EI = "\<Esc>[2 q"  " block in normal mode
+
