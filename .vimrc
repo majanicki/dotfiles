@@ -9,8 +9,6 @@ set splitright           " Vertical split opens to the right
 set nowrap               " Do not wrap long lines
 set backspace=indent,eol,start
 set history=1000
-set undofile
-set undoreload=10000
 set shortmess+=c   " Shut off completion messages
 
 " Enable syntax highlighting
@@ -36,14 +34,15 @@ set listchars=trail:·,tab:»\
 " --- Set make command for Windows ---
 if has('win32') || has('win64')
     set makeprg=.\build.bat
+    nnoremap <silent> gD :grep! "<C-R><C-W>" *<CR>
 else
     set makeprg=./build.sh
+    nnoremap <silent> gD :grep! "<C-R><C-W>" .<CR>
 endif
 
 " --- Key mappings ---
 nnoremap <silent> <F5> :make<CR>
 nnoremap <silent> <F4> :copen<CR><C-w>k:q<CR>
-nnoremap <silent> gD :grep! -r "<C-R><C-W>" .<CR>
 nnoremap <silent> <TAB> :bn<CR>
 nnoremap <silent> <S-TAB> :bp<CR>
 tnoremap <silent> <Esc> <C-\><C-n>
@@ -61,4 +60,5 @@ set cursorline
 let &t_SI = "\<Esc>[6 q"  " blinking vertical bar in insert mode
 let &t_SR = "\<Esc>[4 q"  " underline in replace mode
 let &t_EI = "\<Esc>[2 q"  " block in normal mode
+let $PATH.=';C:\Program Files\Vim\vim91'
 
