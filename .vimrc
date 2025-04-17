@@ -35,6 +35,11 @@ set listchars=trail:·,tab:»\
 if has('win32') || has('win64')
     set makeprg=.\build.bat
     nnoremap <silent> gD :grep! "<C-R><C-W>" *<CR>
+    " Set cursor shape (works in most modern terminals)
+    let &t_SI = "\<Esc>[6 q"  " blinking vertical bar in insert mode
+    let &t_SR = "\<Esc>[4 q"  " underline in replace mode
+    let &t_EI = "\<Esc>[2 q"  " block in normal mode
+    let $PATH.=';C:\Program Files\Vim\vim91'
 else
     set makeprg=./build.sh
     nnoremap <silent> gD :grep! "<C-R><C-W>" .<CR>
@@ -52,13 +57,9 @@ set belloff=all
 
 set t_Co=256
 set termguicolors
+set background=dark
 autocmd vimenter * ++nested colorscheme gruvbox
 
 set cursorline
 
-" Set cursor shape (works in most modern terminals)
-let &t_SI = "\<Esc>[6 q"  " blinking vertical bar in insert mode
-let &t_SR = "\<Esc>[4 q"  " underline in replace mode
-let &t_EI = "\<Esc>[2 q"  " block in normal mode
-let $PATH.=';C:\Program Files\Vim\vim91'
 
