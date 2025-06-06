@@ -12,6 +12,7 @@ vim.opt.history = 1000
 vim.opt.shortmess:append("c")
 vim.opt.cursorline = true
 vim.opt.mouse:append("a")
+vim.opt.scl = "number"
 
 -- Trailing whitespace and tabs
 vim.opt.list = true
@@ -25,6 +26,7 @@ vim.opt.smartcase = true
 
 -- Bell
 vim.opt.belloff = "all"
+
 
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -49,6 +51,25 @@ require("lazy").setup({
     'hrsh7th/cmp-nvim-lsp',
     "hrsh7th/cmp-nvim-lsp-signature-help",
     "hrsh7th/nvim-cmp",
+    "lewis6991/gitsigns.nvim",
+    {
+  "christoomey/vim-tmux-navigator",
+  cmd = {
+    "TmuxNavigateLeft",
+    "TmuxNavigateDown",
+    "TmuxNavigateUp",
+    "TmuxNavigateRight",
+    "TmuxNavigatePrevious",
+    "TmuxNavigatorProcessList",
+  },
+  keys = {
+    { "<c-h>", "<cmd><C-U>TmuxNavigateLeft<cr>" },
+    { "<c-j>", "<cmd><C-U>TmuxNavigateDown<cr>" },
+    { "<c-k>", "<cmd><C-U>TmuxNavigateUp<cr>" },
+    { "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
+    { "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
+  },
+}
 
 })
 
@@ -79,5 +100,20 @@ vim.opt.termguicolors = true
 vim.o.background = "light"
 vim.cmd.colorscheme("PaperColor")
 vim.lsp.enable('pyright')
-vim.lsp.enable('svls')
-vim.diagnostic.config({ underline = true, virtual_lines = true, signs = false})
+vim.lsp.config['omnisharp'] = {
+ cmd = { "/home/mjan/.omnisharp/OmniSharp", "-z", "--hostPID", "8976", "DotNet:enablePackageRestore=false", "--encoding", "utf-8", "--languageserver" },
+ root_markers= {"omnisharp.json", ".sln", ".csproj", "function.json"},
+}
+-- vim.lsp.enable('omnisharp')
+vim.diagnostic.config({ underline = true, virtual_lines = false, signs = true, severity_sort=true})
+require('gitsigns').setup {
+ signs = {
+    add          = { text = '+' },
+    change       = { text = '~' },
+    delete       = { text = '-' },
+    topdelete    = { text = '^' },
+    changedelete = { text = '*' },
+    untracked    = { text = '.' },
+  },
+  signs_staged_enable = false,
+}
