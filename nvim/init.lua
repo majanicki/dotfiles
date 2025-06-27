@@ -12,7 +12,7 @@ vim.opt.history = 1000
 vim.opt.shortmess:append("c")
 vim.opt.cursorline = true
 vim.opt.mouse:append("a")
-vim.opt.scl = "number"
+vim.opt.signcolumn = "number"
 
 -- Trailing whitespace and tabs
 vim.opt.list = true
@@ -22,6 +22,8 @@ vim.opt.listchars = { trail = "·", tab = "» " }
 vim.opt.incsearch = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
+
+vim.g.mapleader = " "
 
 
 -- Bell
@@ -52,43 +54,35 @@ require("lazy").setup({
     "hrsh7th/cmp-nvim-lsp-signature-help",
     "hrsh7th/nvim-cmp",
     "lewis6991/gitsigns.nvim",
-    {
-  "christoomey/vim-tmux-navigator",
-  cmd = {
-    "TmuxNavigateLeft",
-    "TmuxNavigateDown",
-    "TmuxNavigateUp",
-    "TmuxNavigateRight",
-    "TmuxNavigatePrevious",
-    "TmuxNavigatorProcessList",
-  },
-  keys = {
-    { "<c-h>", "<cmd><C-U>TmuxNavigateLeft<cr>" },
-    { "<c-j>", "<cmd><C-U>TmuxNavigateDown<cr>" },
-    { "<c-k>", "<cmd><C-U>TmuxNavigateUp<cr>" },
-    { "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
-    { "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
-  },
-}
-
+    "Tetralux/odin.vim",
 })
 
 cmp = require'cmp'
 require("cmp").setup({
+    completion = {
+        completeopt = 'menu,menuone,noinsert,noselect'
+    },
+    preselect = cmp.PreselectMode.None,  -- Do NOT preselect automatically
     sources = cmp.config.sources(
-      {
-        { name = 'nvim_lsp_signature_help' },
-        { name = 'nvim_lsp' },
-        { name = 'buffer' },
-        { name = 'path' },
-    }),
-    mapping = cmp.mapping.preset.insert({
-        ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-        ['<C-f>'] = cmp.mapping.scroll_docs(4),
-        ['<C-Space>'] = cmp.mapping.complete(),
-        ['<C-e>'] = cmp.mapping.abort(),
-    }),
-})
+        {
+            { name = 'nvim_lsp_signature_help' },
+            { name = 'nvim_lsp' },
+            { name = 'buffer' },
+            { name = 'path' },
+        }),
+        mapping = cmp.mapping.preset.insert({
+            ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+            ['<C-f>'] = cmp.mapping.scroll_docs(4),
+            ['<C-Space>'] = cmp.mapping.complete(),
+            ['<C-e>'] = cmp.mapping.abort(),
+        }),
+    })
+
+local telescope_builtin = require('telescope.builtin')
+vim.keymap.set('n', '<leader>ff', telescope_builtin.find_files, { desc = 'Telescope find files' })
+vim.keymap.set('n', '<leader>fg', telescope_builtin.live_grep, { desc = 'Telescope live grep' })
+vim.keymap.set('n', '<leader>fb', telescope_builtin.buffers, { desc = 'Telescope buffers' })
+vim.keymap.set('n', '<leader>fh', telescope_builtin.help_tags, { desc = 'Telescope help tags' })
 
 
 
@@ -97,7 +91,7 @@ vim.opt.pumwidth = 20
 
 -- Theme and color
 vim.opt.termguicolors = true
-vim.o.background = "light"
+vim.o.background = "dark"
 vim.cmd.colorscheme("PaperColor")
 vim.lsp.enable('pyright')
 vim.lsp.config['omnisharp'] = {
@@ -117,3 +111,12 @@ require('gitsigns').setup {
   },
   signs_staged_enable = false,
 }
+vim.lsp.enable('svls')
+vim.lsp.enable('clangd')
+vim.lsp.enable('gopls')
+
+vim.diagnostic.config({ underline = true, virtual_lines = false, signs = true})
+vim.keymap.set("n", "<leader>e", function()
+  vim.diagnostic.open_float(nil, { focus = false, border = "rounded" })
+end, { desc = "Show diagnostics in floating window" })
+vim.keymap.set('n', '<F2>', vim.lsp.buf.rename, { desc = 'LSP Rename' })

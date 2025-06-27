@@ -57,9 +57,10 @@ set belloff=all
 
 set t_Co=256
 set termguicolors
-set background=dark
-autocmd vimenter * ++nested colorscheme gruvbox
+set background=light
+" autocmd vimenter * ++nested colorscheme gruvbox
+colorscheme PaperColor
 
 set cursorline
 
-
+set mouse+=a
