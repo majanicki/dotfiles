@@ -55,6 +55,17 @@ require("lazy").setup({
     "hrsh7th/nvim-cmp",
     "lewis6991/gitsigns.nvim",
     "Tetralux/odin.vim",
+    -- init.lua:
+    {
+        'nvim-telescope/telescope.nvim', tag = '0.1.8',
+        -- or                              , branch = '0.1.x',
+        dependencies = { 'nvim-lua/plenary.nvim' }
+    },
+    {
+        "ThePrimeagen/harpoon",
+        branch = "harpoon2", -- or omit if you want v1
+    }
+
 })
 
 cmp = require'cmp'
@@ -88,28 +99,47 @@ vim.o.background = "dark"
 vim.cmd.colorscheme("PaperColor")
 vim.lsp.enable('pyright')
 vim.lsp.config['omnisharp'] = {
- cmd = { "/home/mjan/.omnisharp/OmniSharp", "-z", "--hostPID", "8976", "DotNet:enablePackageRestore=false", "--encoding", "utf-8", "--languageserver" },
- root_markers= {"omnisharp.json", ".sln", ".csproj", "function.json"},
+    cmd = { "/home/mjan/.omnisharp/OmniSharp", "-z", "--hostPID", "8976", "DotNet:enablePackageRestore=false", "--encoding", "utf-8", "--languageserver" },
+    root_markers= {"omnisharp.json", ".sln", ".csproj", "function.json"},
 }
 -- vim.lsp.enable('omnisharp')
 vim.diagnostic.config({ underline = true, virtual_lines = false, signs = true, severity_sort=true})
 require('gitsigns').setup {
- signs = {
-    add          = { text = '+' },
-    change       = { text = '~' },
-    delete       = { text = '-' },
-    topdelete    = { text = '^' },
-    changedelete = { text = '*' },
-    untracked    = { text = '.' },
-  },
-  signs_staged_enable = false,
+    signs = {
+        add          = { text = '+' },
+        change       = { text = '~' },
+        delete       = { text = '-' },
+        topdelete    = { text = '^' },
+        changedelete = { text = '*' },
+        untracked    = { text = '.' },
+    },
+    signs_staged_enable = false,
 }
-vim.lsp.enable('svls')
 vim.lsp.enable('clangd')
 vim.lsp.enable('gopls')
+vim.lsp.enable('ols')
 
 vim.diagnostic.config({ underline = true, virtual_lines = false, signs = true})
 vim.keymap.set("n", "<leader>e", function()
-  vim.diagnostic.open_float(nil, { focus = false, border = "rounded" })
+    vim.diagnostic.open_float(nil, { focus = false, border = "rounded" }, { desc = ''})
 end, { desc = "Show diagnostics in floating window" })
 vim.keymap.set('n', '<F2>', vim.lsp.buf.rename, { desc = 'LSP Rename' })
+
+
+local telescope = require('telescope.builtin')
+vim.keymap.set('n', '<leader>ff', telescope.find_files, { desc = 'Telescope find files' })
+vim.keymap.set('n', '<leader>fg', telescope.live_grep, { desc = 'Telescope live grep' })
+vim.keymap.set('n', '<leader>fb', telescope.buffers, { desc = 'Telescope buffers' })
+vim.keymap.set('n', '<leader>fm', telescope.marks, { desc = 'Telescope marks' })
+vim.keymap.set('n', '<leader>fd', telescope.lsp_document_symbols, { desc = 'Telescope lsp document symbols' })
+
+local harpoon = require("harpoon")
+
+harpoon:setup({})
+
+vim.keymap.set("n", "<leader>m", function() harpoon:list():add() end)
+vim.keymap.set("n", "<leader>'", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+vim.keymap.set("n", "<leader>1", function() harpoon:list():select(1) end)
+vim.keymap.set("n", "<leader>2", function() harpoon:list():select(2) end)
+vim.keymap.set("n", "<leader>3", function() harpoon:list():select(3) end)
+vim.keymap.set("n", "<leader>4", function() harpoon:list():select(4) end)
