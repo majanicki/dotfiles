@@ -13,6 +13,7 @@ vim.opt.shortmess:append("c")
 vim.opt.cursorline = true
 vim.opt.mouse:append("a")
 vim.opt.signcolumn = "number"
+vim.opt.scrolloff = 5
 
 -- Trailing whitespace and tabs
 vim.opt.list = true
@@ -46,6 +47,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
     "NLKNguyen/papercolor-theme",
+    'stevearc/oil.nvim',
     "neovim/nvim-lspconfig",
     'hrsh7th/cmp-buffer',
     'hrsh7th/cmp-path',
@@ -64,7 +66,8 @@ require("lazy").setup({
     {
         "ThePrimeagen/harpoon",
         branch = "harpoon2", -- or omit if you want v1
-    }
+    },
+    {"nvim-treesitter/nvim-treesitter", branch = 'master', lazy = false, build = ":TSUpdate"}
 
 })
 
@@ -93,16 +96,15 @@ require("cmp").setup({
 vim.opt.pumheight = 5
 vim.opt.pumwidth = 20
 
--- Theme and color
+
 vim.opt.termguicolors = true
 vim.o.background = "dark"
 vim.cmd.colorscheme("PaperColor")
 vim.lsp.enable('pyright')
-vim.lsp.config['omnisharp'] = {
-    cmd = { "/home/mjan/.omnisharp/OmniSharp", "-z", "--hostPID", "8976", "DotNet:enablePackageRestore=false", "--encoding", "utf-8", "--languageserver" },
-    root_markers= {"omnisharp.json", ".sln", ".csproj", "function.json"},
-}
--- vim.lsp.enable('omnisharp')
+-- vim.lsp.enable('clangd')
+vim.lsp.enable('gopls')
+vim.lsp.enable('ols')
+
 vim.diagnostic.config({ underline = true, virtual_lines = false, signs = true, severity_sort=true})
 require('gitsigns').setup {
     signs = {
@@ -115,11 +117,6 @@ require('gitsigns').setup {
     },
     signs_staged_enable = false,
 }
-vim.lsp.enable('clangd')
-vim.lsp.enable('gopls')
-vim.lsp.enable('ols')
-
-vim.diagnostic.config({ underline = true, virtual_lines = false, signs = true})
 vim.keymap.set("n", "<leader>e", function()
     vim.diagnostic.open_float(nil, { focus = false, border = "rounded" }, { desc = ''})
 end, { desc = "Show diagnostics in floating window" })
@@ -143,3 +140,7 @@ vim.keymap.set("n", "<leader>1", function() harpoon:list():select(1) end)
 vim.keymap.set("n", "<leader>2", function() harpoon:list():select(2) end)
 vim.keymap.set("n", "<leader>3", function() harpoon:list():select(3) end)
 vim.keymap.set("n", "<leader>4", function() harpoon:list():select(4) end)
+
+vim.o.guifont = "Consolas:h15"
+-- require'nvim-treesitter.configs'.setup {highlight = {enable = true}}
+require("oil").setup()
