@@ -47,7 +47,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
     "NLKNguyen/papercolor-theme",
-    'stevearc/oil.nvim',
+    {'stevearc/oil.nvim'},
     "neovim/nvim-lspconfig",
     'hrsh7th/cmp-buffer',
     'hrsh7th/cmp-path',
@@ -57,6 +57,7 @@ require("lazy").setup({
     "hrsh7th/nvim-cmp",
     "lewis6991/gitsigns.nvim",
     "Tetralux/odin.vim",
+    "ggandor/leap.nvim",
     -- init.lua:
     {
         'nvim-telescope/telescope.nvim', tag = '0.1.8',
@@ -141,6 +142,9 @@ vim.keymap.set("n", "<leader>2", function() harpoon:list():select(2) end)
 vim.keymap.set("n", "<leader>3", function() harpoon:list():select(3) end)
 vim.keymap.set("n", "<leader>4", function() harpoon:list():select(4) end)
 
-vim.o.guifont = "Consolas:h15"
+vim.o.guifont = "Consolas:h12"
 -- require'nvim-treesitter.configs'.setup {highlight = {enable = true}}
-require("oil").setup()
+require('oil').setup()
+vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+require('leap').set_default_mappings()
+
