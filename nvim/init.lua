@@ -67,10 +67,17 @@ require("cmp").setup({
     preselect = cmp.PreselectMode.None,  -- Do NOT preselect automatically
     sources = cmp.config.sources(
         {
-            { name = 'buffer' },
+            {
+                name = 'buffer',
+                option = {
+                    get_bufnrs = function()
+                        return vim.api.nvim_list_bufs()
+                    end
+                }
+            },
             { name = 'path' },
         }),
-            mapping = cmp.mapping.preset.insert({
+        mapping = cmp.mapping.preset.insert({
             ['<C-b>'] = cmp.mapping.scroll_docs(-4),
             ['<C-f>'] = cmp.mapping.scroll_docs(4),
             ['<C-Space>'] = cmp.mapping.complete(),
@@ -79,33 +86,33 @@ require("cmp").setup({
     })
 
 
-vim.opt.pumheight = 5
-vim.opt.pumwidth = 20
+    vim.opt.pumheight = 5
+    vim.opt.pumwidth = 20
 
 
-vim.opt.termguicolors = true
-vim.o.background = "light"
-vim.cmd.colorscheme("PaperColor")
+    vim.opt.termguicolors = true
+    vim.o.background = "dark"
+    vim.cmd.colorscheme("PaperColor")
 
-require('gitsigns').setup {
-    signs = {
-        add          = { text = '+' },
-        change       = { text = '~' },
-        delete       = { text = '-' },
-        topdelete    = { text = '^' },
-        changedelete = { text = '*' },
-        untracked    = { text = '.' },
-    },
-    signs_staged_enable = false,
-}
+    require('gitsigns').setup {
+        signs = {
+            add          = { text = '+' },
+            change       = { text = '~' },
+            delete       = { text = '-' },
+            topdelete    = { text = '^' },
+            changedelete = { text = '*' },
+            untracked    = { text = '.' },
+        },
+        signs_staged_enable = false,
+    }
 
-vim.o.guifont = "Consolas:h12"
+    vim.o.guifont = "Consolas:h12"
 
-require('oil').setup()
-vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+    require('oil').setup()
+    vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 
-require('mini.pick').setup()
-vim.keymap.set("n", "<leader>f", "<CMD>Pick files<CR>")
-vim.keymap.set("n", "<leader>g", "<CMD>Pick grep_live<CR>")
+    require('mini.pick').setup()
+    vim.keymap.set("n", "<leader>ff", "<CMD>Pick files<CR>")
+    vim.keymap.set("n", "<leader>fg", "<CMD>Pick grep_live<CR>")
 
-require('mini.cursorword').setup()
+    require('mini.cursorword').setup()
