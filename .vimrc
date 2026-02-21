@@ -1,18 +1,16 @@
-"--- Basic settings ---
+"pickperf--- Basic settings ---
 set tabstop=4            " Number of visual spaces per tab
 set softtabstop=4        " Number of spaces in tab when editing
 set shiftwidth=4         " Number of spaces used for autoindent
 set expandtab            " Convert tabs to spaces
 set number               " Show line numbers
+set relativenumber       " Show line relative line numbers
 set splitbelow           " Horizontal split opens at the bottom
 set splitright           " Vertical split opens to the right
 set nowrap               " Do not wrap long lines
 set backspace=indent,eol,start
 set history=1000
 set shortmess+=c   " Shut off completion messages
-
-" Enable syntax highlighting
-syntax enable
 
 " Enable file type detection and plugin loading
 filetype plugin indent on
@@ -31,36 +29,31 @@ set smartcase            " ...unless the search includes uppercase
 set list
 set listchars=trail:·,tab:»\ 
 
-" --- Set make command for Windows ---
-if has('win32') || has('win64')
-    set makeprg=.\build.bat
-    nnoremap <silent> gD :grep! "<C-R><C-W>" *<CR>
-    " Set cursor shape (works in most modern terminals)
-    let &t_SI = "\<Esc>[6 q"  " blinking vertical bar in insert mode
-    let &t_SR = "\<Esc>[4 q"  " underline in replace mode
-    let &t_EI = "\<Esc>[2 q"  " block in normal mode
-    let $PATH.=';C:\Program Files\Vim\vim91'
-else
-    set makeprg=./build.sh
-    nnoremap <silent> gD :grep! "<C-R><C-W>" .<CR>
-endif
-
-" --- Key mappings ---
-nnoremap <silent> <F5> :make<CR>
-nnoremap <silent> <F4> :copen<CR><C-w>k:q<CR>
-nnoremap <silent> <TAB> :bn<CR>
-nnoremap <silent> <S-TAB> :bp<CR>
-tnoremap <silent> <Esc> <C-\><C-n>
-
 " --- Disable annoying sounds (bells) ---
-set belloff=all
-
-set t_Co=256
+set belloff=all 
 set termguicolors
-set background=light
-" autocmd vimenter * ++nested colorscheme gruvbox
-colorscheme PaperColor
+set t_Co=256
+set background=dark
+" colorscheme mck
+autocmd ColorScheme * hi Normal ctermbg=NONE
+autocmd ColorScheme * hi NonText ctermbg=NONE
+autocmd ColorScheme * hi EndOfBuffer ctermbg=NONE
+autocmd ColorScheme * hi clear Statement
+autocmd ColorScheme * hi clear Statement
+autocmd ColorScheme * hi clear Preproc
+autocmd ColorScheme * hi clear Type
+autocmd ColorScheme * hi clear Special
+autocmd ColorScheme * hi clear Constant
+colorscheme torte
+syntax on
+set exrc
+set secure
+set timeout
+set ttimeout
+set timeoutlen=500
+set ttimeoutlen=10
 
-set cursorline
+nnoremap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
-set mouse+=a
