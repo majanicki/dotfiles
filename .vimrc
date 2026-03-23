@@ -4,6 +4,7 @@ set softtabstop=4        " Number of spaces in tab when editing
 set shiftwidth=4         " Number of spaces used for autoindent
 set expandtab            " Convert tabs to spaces
 set number               " Show line numbers
+set relativenumber       " Show line numbers
 set splitbelow           " Horizontal split opens at the bottom
 set splitright           " Vertical split opens to the right
 set nowrap               " Do not wrap long lines
@@ -41,7 +42,6 @@ if has('win32') || has('win64')
     let &t_EI = "\<Esc>[2 q"  " block in normal mode
     let $PATH.=';C:\Program Files\Vim\vim91'
 else
-    set makeprg=./build.sh
     nnoremap <silent> gD :grep! "<C-R><C-W>" .<CR>
 endif
 
@@ -57,10 +57,12 @@ set belloff=all
 
 set t_Co=256
 set termguicolors
-set background=light
+set background=dark
 " autocmd vimenter * ++nested colorscheme gruvbox
-colorscheme PaperColor
+"" colorscheme vacme
+""  colorscheme PaperColor
 
 set cursorline
 
 set mouse+=a
+set autoread
