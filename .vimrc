@@ -11,6 +11,7 @@ set nowrap               " Do not wrap long lines
 set backspace=indent,eol,start
 set history=1000
 set shortmess+=c   " Shut off completion messages
+set completeopt=menu,menuone,noselect,noinsert
 
 " Enable syntax highlighting
 syntax enable
@@ -60,9 +61,23 @@ set termguicolors
 set background=dark
 " autocmd vimenter * ++nested colorscheme gruvbox
 "" colorscheme vacme
-""  colorscheme PaperColor
+colorscheme PaperColor
 
 set cursorline
 
 set mouse+=a
 set autoread
+
+let g:coc_node_path = '/home/maciej/bin/node'
+
+call plug#begin('~/.vim/plugged')
+
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'tikhomirov/vim-glsl'
+
+call plug#end()
+
+nmap gd <Plug>(coc-definition)
+nnoremap K :call CocActionAsync('doHover')<CR>
+
+autocmd! BufNewFile,BufRead *.vs,*.fs set ft=glsl
