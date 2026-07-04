@@ -12,6 +12,14 @@ set backspace=indent,eol,start
 set history=1000
 set shortmess+=c   " Shut off completion messages
 set completeopt=menu,menuone,noselect,noinsert
+set noshowmode
+let mapleader = " "
+
+" Return to last edit position when opening files (You want this!)
+autocmd BufReadPost *
+     \ if line("'\"") > 0 && line("'\"") <= line("$") |
+     \   exe "normal! g`\"" |
+     \ endif
 
 " Enable syntax highlighting
 syntax enable
@@ -33,26 +41,6 @@ set smartcase            " ...unless the search includes uppercase
 set list
 set listchars=trail:·,tab:»\ 
 
-" --- Set make command for Windows ---
-if has('win32') || has('win64')
-    set makeprg=.\build.bat
-    nnoremap <silent> gD :grep! "<C-R><C-W>" *<CR>
-    " Set cursor shape (works in most modern terminals)
-    let &t_SI = "\<Esc>[6 q"  " blinking vertical bar in insert mode
-    let &t_SR = "\<Esc>[4 q"  " underline in replace mode
-    let &t_EI = "\<Esc>[2 q"  " block in normal mode
-    let $PATH.=';C:\Program Files\Vim\vim91'
-else
-    nnoremap <silent> gD :grep! "<C-R><C-W>" .<CR>
-endif
-
-" --- Key mappings ---
-nnoremap <silent> <F5> :make<CR>
-nnoremap <silent> <F4> :copen<CR><C-w>k:q<CR>
-nnoremap <silent> <TAB> :bn<CR>
-nnoremap <silent> <S-TAB> :bp<CR>
-tnoremap <silent> <Esc> <C-\><C-n>
-
 " --- Disable annoying sounds (bells) ---
 set belloff=all
 
@@ -63,21 +51,63 @@ set background=dark
 "" colorscheme vacme
 colorscheme PaperColor
 
-set cursorline
+" set cursorline
 
 set mouse+=a
 set autoread
 
-let g:coc_node_path = '/home/maciej/bin/node'
-
 call plug#begin('~/.vim/plugged')
-
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'tikhomirov/vim-glsl'
-
+Plug 'vale1410/vim-minizinc'
+Plug 'jpalardy/vim-slime'
+Plug 'tpope/vim-dispatch'
+Plug 'girishji/vimcomplete'
+Plug 'yegappan/lsp'
 call plug#end()
 
-nmap gd <Plug>(coc-definition)
-nnoremap K :call CocActionAsync('doHover')<CR>
+let lspOpts = (#{
+        \   autoHighlightDiags: v:false,
+        \   diagSignErrorText: 'E',
+        \   echoSignature: v:true,
+        \   highlightDiagInline: v:false,
+        \   semanticHighlight: v:false,
+        \   showSignature: v:true,
+        \   showSignatureDocs: v:false,
+	\ })
+autocmd User LspSetup call LspOptionsSet(lspOpts)
+
+let lspServers = [#{
+	\	  name: 'clang',
+	\	  filetype: ['c', 'cpp'],
+	\	  path: '/usr/bin/clangd',
+	\	  args: ['--background-index']
+	\ }]
+autocmd User LspSetup call LspAddServer(lspServers)
+
+nmap gd          :LspGotoDefinition<CR>
+nmap gr          :LspShowReferences<CR>
+nmap gri         :LspGotoImpl<CR>
+nmap <leader>rn  :LspRename<CR>
+nmap K           :LspHover<CR>
+nmap [d          :LspDiag prev<CR>
+nmap ]d          :LspDiag next<CR>
+nmap <space>e    :LspDiagHere <CR>
+set signcolumn=number
+
+" let vcoptions = {
+"     \ 'completor': {'showCmpSource': 0},
+"     \ 'lsp': {'cmpSourceWidth': 3},
+"     \ }
+" autocmd VimEnter * call g:VimCompleteOptionsSet(vcoptions)
+
+
 
 autocmd! BufNewFile,BufRead *.vs,*.fs set ft=glsl
+packadd! termdebug
+
+let g:slime_target = "tmux"
+let g:slime_default_config = {
+\ "socket_name": "default",
+\ "target_pane": "{right-of}"
+\ }
+
